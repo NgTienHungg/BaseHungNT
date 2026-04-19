@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72a536aa46b24220841de61187ad14d8, type: 3}
+  m_Name: GitPackageData
+  m_EditorClassIdentifier: 
+  packages:
+  - name: com.coffee.ui-particle
+    url: https://github.com/mob-sakai/ParticleEffectForUGUI.git
+    installed: 0
+  - name: com.coffee.ui-effect
+    url: https://github.com/mob-sakai/UIEffect.git?path=Packages/src
+    installed: 1
+  - name: com.coffee.softmask-for-ugui
+    url: https://github.com/mob-sakai/SoftMaskForUGUI.git?path=Packages/src
+    installed: 0
+  - name: com.coffee.unmask
+    url: https://github.com/mob-sakai/UnmaskForUGUI.git
+    installed: 1
+  - name: com.coffee.event-drawer-ex
+    url: https://github.com/mob-sakai/UnityEventDrawerEx.git
+    installed: 0
+  - name: com.needle.console
+    url: https://github.com/needle-tools/needle-console.git?path=/package
+    installed: 1
+  - name: com.wooshii.hierarchydecorator
+    url: https://github.com/WooshiiDev/HierarchyDecorator.git
+    installed: 1
