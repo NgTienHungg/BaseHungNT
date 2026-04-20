@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public interface IManager
     {

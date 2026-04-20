@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public class CheatHideUI : MonoBehaviour
     {

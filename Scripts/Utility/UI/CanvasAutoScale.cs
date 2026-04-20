@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     /// <summary>
     /// Automatically adjusts the CanvasScaler matchWidthOrHeight based on screen ratio.

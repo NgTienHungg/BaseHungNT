@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     [RequireComponent(typeof(Button))]
     public class UIBaseButton : UIBaseView

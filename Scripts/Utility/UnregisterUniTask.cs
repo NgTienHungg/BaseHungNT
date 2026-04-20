@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public class UnregisterUniTask : MonoBehaviour
     {

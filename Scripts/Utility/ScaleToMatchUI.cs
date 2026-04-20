@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     /// <summary>
     /// Tự động scale GameObject (SpriteRenderer) để khớp với kích thước của một UI (RectTransform).

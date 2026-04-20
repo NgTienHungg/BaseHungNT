@@ -3,7 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     /// <summary>
     /// Tạo hiệu ứng nhấn (scale nhỏ) và thả (scale về kích thước ban đầu) cho UI

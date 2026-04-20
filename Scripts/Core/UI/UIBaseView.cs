@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     [RequireComponent(typeof(RectTransform))]
     public class UIBaseView : MonoBehaviour

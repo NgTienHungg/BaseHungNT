@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public abstract class AutoActionButton : MonoBehaviour
     {

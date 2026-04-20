@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public class MonoSingletonScene<TMono> : MonoBehaviour where TMono : MonoBehaviour
     {

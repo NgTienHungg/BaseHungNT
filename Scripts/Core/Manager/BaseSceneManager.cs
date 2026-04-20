@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public abstract class BaseSceneManager<TMono> : MonoSingletonScene<TMono> where TMono : MonoBehaviour
     {

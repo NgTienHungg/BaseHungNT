@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WingsMob.HungNT.Editor
+namespace HungNT.Editor
 {
     public static class ShortcutEditor
     {

@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace WingsMob.HungNT.Editor
+namespace HungNT.Editor
 {
     public static class SaveMenuItem
     {

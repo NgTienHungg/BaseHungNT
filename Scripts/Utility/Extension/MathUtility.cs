@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public static class MathUtility
     {

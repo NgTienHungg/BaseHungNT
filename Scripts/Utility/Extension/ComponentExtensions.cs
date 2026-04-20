@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public static class ComponentExtensions
     {

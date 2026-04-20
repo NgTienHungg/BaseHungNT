@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace WingsMob.HungNT.Editor
+namespace HungNT.Editor
 {
     public class SceneEditorWindow : OdinEditorWindow
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     public abstract class SOSingleton<T> : ScriptableObject where T : SOSingleton<T>
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     /// <summary>
     /// Safe area implementation for notched mobile devices. Usage:

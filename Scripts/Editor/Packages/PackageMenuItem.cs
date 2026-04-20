@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace WingsMob.HungNT.Editor
+namespace HungNT.Editor
 {
     public static class PackageMenuItem
     {

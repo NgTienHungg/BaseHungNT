@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace WingsMob.HungNT.Editor
+namespace HungNT.Editor
 {
     [CreateAssetMenu(fileName = "GitPackageData", menuName = "HungNT/Git Package Data", order = 0)]
     public class GitPackageData : ScriptableObject

@@ -3,7 +3,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT
 {
     [Serializable]
     public class TweenConfig

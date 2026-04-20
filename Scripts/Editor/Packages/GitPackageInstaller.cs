@@ -3,7 +3,7 @@ using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace WingsMob.HungNT.Editor
+namespace HungNT.Editor
 {
     public static class GitPackageInstaller
     {
