@@ -1,4 +1,3 @@
-#if HUNGNT_EVENT_DISPATCHER
 using System;
 using System.Collections.Generic;
 
@@ -150,4 +149,3 @@ namespace HungNT
         }
     }
 }
-#endif

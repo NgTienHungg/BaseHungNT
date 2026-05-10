@@ -1,4 +1,3 @@
-#if HUNGNT_EVENT_DISPATCHER
 using UnityEngine;
 
 namespace HungNT.Demo
@@ -30,4 +29,3 @@ namespace HungNT.Demo
             => this.Dispatch(new OnPlayerJump { JumpHeight = 3.5f });
     }
 }
-#endif

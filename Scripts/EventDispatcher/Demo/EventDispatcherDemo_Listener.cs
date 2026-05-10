@@ -1,4 +1,3 @@
-#if HUNGNT_EVENT_DISPATCHER
 using UnityEngine;
 
 namespace HungNT.Demo
@@ -53,4 +52,3 @@ namespace HungNT.Demo
             => Debug.Log($"[{name}] Player jumped {e.JumpHeight}m");
     }
 }
-#endif

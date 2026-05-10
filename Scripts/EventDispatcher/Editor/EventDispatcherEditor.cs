@@ -1,4 +1,3 @@
-#if HUNGNT_EVENT_DISPATCHER
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -193,4 +192,3 @@ namespace HungNT.Editor
         }
     }
 }
-#endif

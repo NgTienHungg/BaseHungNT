@@ -1,4 +1,3 @@
-#if HUNGNT_EVENT_DISPATCHER
 namespace HungNT
 {
     /// <summary>
@@ -12,4 +11,3 @@ namespace HungNT
     {
     }
 }
-#endif
