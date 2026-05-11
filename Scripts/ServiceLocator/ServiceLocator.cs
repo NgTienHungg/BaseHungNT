@@ -9,14 +9,16 @@ namespace HungNT
     /// </summary>
     public class ServiceLocator : MonoSingleton<ServiceLocator>
     {
-        // Key = service Type, Value = implementation instance (ẩn trong Inspector, hiển thị qua ServiceLocatorEditor)
         [ShowInInspector, TableList]
         private readonly Dictionary<Type, IService> _services = new();
+
+        private readonly Dictionary<Type, List<Action<IService>>> _pendingCallbacks = new();
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
             _services.Clear();
+            _pendingCallbacks.Clear();
         }
 
         // ── Register / Unregister ────────────────────────────────────────────
@@ -42,6 +44,7 @@ namespace HungNT
 
             _services[type] = impl;
             this.Log($"Register<{type.Name}> — {impl.GetType().Name.Color("cyan")}.");
+            FlushPendingCallbacks(type, impl);
         }
 
         /// <summary>
@@ -69,6 +72,7 @@ namespace HungNT
 
             _services[serviceType] = impl;
             this.Log($"Register({serviceType.Name}) — {impl.GetType().Name.Color("cyan")}.");
+            FlushPendingCallbacks(serviceType, impl);
         }
 
         /// <summary>Hủy đăng ký <typeparamref name="TService"/> khỏi locator.</summary>
@@ -99,6 +103,31 @@ namespace HungNT
 
             this.LogWarning($"Get<{type.Name}> — chưa register service này. Trả về default.");
             return default;
+        }
+
+        /// <summary>
+        /// Lấy implementation qua callback. Nếu đã register → gọi ngay.
+        /// Nếu chưa → queue lại, tự gọi khi service được register.
+        /// </summary>
+        public void Get<TService>(Action<TService> callback) where TService : IService
+        {
+            if (callback == null) return;
+
+            var type = typeof(TService);
+
+            if (_services.TryGetValue(type, out var service))
+            {
+                callback((TService)service);
+                return;
+            }
+
+            if (!_pendingCallbacks.TryGetValue(type, out var list))
+            {
+                list = new List<Action<IService>>();
+                _pendingCallbacks[type] = list;
+            }
+
+            list.Add(s => callback((TService)s));
         }
 
         /// <summary>
@@ -138,6 +167,20 @@ namespace HungNT
         public IReadOnlyDictionary<Type, IService> GetDebugSnapshot()
         {
             return _services;
+        }
+
+        // ── Private ───────────────────────────────────────────────────────────
+
+        private void FlushPendingCallbacks(Type type, IService impl)
+        {
+            if (!_pendingCallbacks.TryGetValue(type, out var list)) return;
+
+            _pendingCallbacks.Remove(type);
+
+            foreach (var callback in list)
+            {
+                callback(impl);
+            }
         }
     }
 }

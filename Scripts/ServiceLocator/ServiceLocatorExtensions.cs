@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace HungNT
@@ -13,6 +14,14 @@ namespace HungNT
         public static TService GetService<TService>(this MonoBehaviour _) where TService : IService
         {
             return ServiceLocator.Instance.Get<TService>();
+        }
+
+        /// <summary>
+        /// Lấy service qua callback — nếu đã register thì gọi ngay, chưa thì đợi register xong mới gọi.
+        /// </summary>
+        public static void GetService<TService>(this MonoBehaviour _, Action<TService> callback) where TService : IService
+        {
+            ServiceLocator.Instance.Get(callback);
         }
 
         /// <summary>

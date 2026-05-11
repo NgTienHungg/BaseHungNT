@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace HungNT.Demo
@@ -32,7 +33,7 @@ namespace HungNT.Demo
 
         // ── Ads ──────────────────────────────────────────────────────────────
 
-        [ContextMenu("Show Banner")]
+        [Button]
         public void ShowBanner()
         {
             var ads = this.GetService<IAdsService>();
@@ -40,52 +41,64 @@ namespace HungNT.Demo
             Debug.Log($"[Demo] ShowBanner called via {ads.GetType().Name}");
         }
 
-        [ContextMenu("Show Rewarded")]
+        [Button]
+        public void ShowInterstitial()
+        {
+            var ads = this.GetService<IAdsService>();
+            ads.ShowInterstitial(
+                placement: AdsPlacement.DEFAULT,
+                onSuccess: () => Debug.Log("[Demo] Interstitial shown successfully."),
+                onFailure: () => Debug.Log("[Demo] Interstitial failed or skipped.")
+            );
+        }
+
+        [Button]
         public void ShowRewarded()
         {
             var ads = this.GetService<IAdsService>();
-            ads.ShowRewarded(rewarded =>
-            {
-                Debug.Log($"[Demo] ShowRewarded result: {rewarded}");
-            });
+            ads.ShowRewarded(
+                placement: AdsPlacement.DOUBLE_COIN,
+                onSuccess: () => Debug.Log("[Demo] Rewarded — user earned reward!"),
+                onFailure: () => Debug.Log("[Demo] Rewarded — failed or closed early.")
+            );
         }
 
         // ── Localization ─────────────────────────────────────────────────────
 
-        [ContextMenu("Get Localized Text")]
-        public void GetLocalizedText()
-        {
-            var loc = this.GetService<ILocalizationService>();
-            var text = loc.GetText("ui_start_button");
-            Debug.Log($"[Demo] Localized text: '{text}' | Language: {loc.CurrentLanguage}");
-        }
-
-        [ContextMenu("Set Language Vietnamese")]
-        public void SetLanguageVietnamese()
-        {
-            var loc = this.GetService<ILocalizationService>();
-            loc.SetLanguage("vi");
-            Debug.Log($"[Demo] Language set to: {loc.CurrentLanguage}");
-        }
-
-        // ── Tracking ─────────────────────────────────────────────────────────
-
-        [ContextMenu("Track Event")]
-        public void TrackEvent()
-        {
-            var tracking = this.GetService<ITrackingService>();
-            tracking.TrackEvent("level_complete", new Dictionary<string, object>
-            {
-                { "level", 1 },
-                { "score", 3500 },
-                { "time_seconds", 42f }
-            });
-            Debug.Log("[Demo] TrackEvent 'level_complete' sent.");
-        }
+        // [ContextMenu("Get Localized Text")]
+        // public void GetLocalizedText()
+        // {
+        //     var loc = this.GetService<ILocalizationService>();
+        //     var text = loc.GetText("ui_start_button");
+        //     Debug.Log($"[Demo] Localized text: '{text}' | Language: {loc.CurrentLanguage}");
+        // }
+        //
+        // [ContextMenu("Set Language Vietnamese")]
+        // public void SetLanguageVietnamese()
+        // {
+        //     var loc = this.GetService<ILocalizationService>();
+        //     loc.SetLanguage("vi");
+        //     Debug.Log($"[Demo] Language set to: {loc.CurrentLanguage}");
+        // }
+        //
+        // // ── Tracking ─────────────────────────────────────────────────────────
+        //
+        // [ContextMenu("Track Event")]
+        // public void TrackEvent()
+        // {
+        //     var tracking = this.GetService<ITrackingService>();
+        //     tracking.TrackEvent("level_complete", new Dictionary<string, object>
+        //     {
+        //         { "level", 1 },
+        //         { "score", 3500 },
+        //         { "time_seconds", 42f }
+        //     });
+        //     Debug.Log("[Demo] TrackEvent 'level_complete' sent.");
+        // }
 
         // ── Extension Method style (via ServiceLocatorExtensions) ─────────────
 
-        [ContextMenu("TryGet AdsService")]
+        [Button]
         public void TryGetAdsService()
         {
             if (this.TryGetService<IAdsService>(out var ads))

@@ -32,15 +32,9 @@ namespace HungNT
         {
             RegisterMonoServices();
             RegisterNonMonoServices();
-            OnRegisterServices();
+            InitializeAllServices();
+            LateInitializeAllServices();
         }
-
-        // ── Overridable hook ─────────────────────────────────────────────────
-
-        /// <summary>
-        /// Override để đăng ký service tạo bằng code (SDK wrapper, factory, v.v.).
-        /// </summary>
-        protected virtual void OnRegisterServices() { }
 
         // ── Private ──────────────────────────────────────────────────────────
 
@@ -74,6 +68,24 @@ namespace HungNT
             var keyType = FindFirstServiceInterface(concreteType) ?? concreteType;
 
             ServiceLocator.Instance.Register(keyType, impl);
+        }
+
+        private void InitializeAllServices()
+        {
+            foreach (var service in _monoServices)
+                service.Initialize();
+
+            foreach (var service in _nonMonoServices)
+                service?.Initialize();
+        }
+
+        private void LateInitializeAllServices()
+        {
+            foreach (var service in _monoServices)
+                service.LateInitialize();
+
+            foreach (var service in _nonMonoServices)
+                service?.LateInitialize();
         }
 
         /// <summary>
