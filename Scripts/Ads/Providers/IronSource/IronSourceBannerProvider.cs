@@ -7,10 +7,6 @@ namespace HungNT
 
         public void Initialize(AdsConfig config)
         {
-            var appKey = config.IronSourceAppKey;
-            if (string.IsNullOrEmpty(appKey)) return;
-
-            IronSource.Agent.init(appKey, IronSourceAdUnits.BANNER);
             this.Log("Banner initialized.");
         }
 

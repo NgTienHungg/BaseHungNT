@@ -6,10 +6,6 @@ namespace HungNT
     /// </summary>
     public static partial class AdsDefine
     {
-        // ── Config ───────────────────────────────────────────────────────────
-
         public const string ADS_CONFIG_PATH = "Configs/AdsConfig";
-        public const float INTER_COOLDOWN = 60f;
-        public const float REWARD_TO_INTER_COOLDOWN = 30f;
     }
 }

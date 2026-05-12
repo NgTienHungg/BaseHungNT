@@ -9,7 +9,6 @@ namespace HungNT
     /// Đăng ký services vào <see cref="ServiceLocator"/> khi scene khởi động.
     /// — Mono services: tự động tìm qua <c>GetComponentsInChildren</c> trên cùng GameObject.
     /// — Non-Mono services: thêm trực tiếp từ Inspector qua <c>[SerializeReference]</c>.
-    /// Đây là template per-project — override <see cref="OnRegisterServices"/> để thêm logic riêng.
     /// </summary>
     public class ServiceRegister : MonoBehaviour
     {

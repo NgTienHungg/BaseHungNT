@@ -13,12 +13,8 @@ namespace HungNT
         public void Initialize(AdsConfig config)
         {
             _adUnitId = config.AdMobAppOpenId;
-
-            MobileAds.Initialize(status =>
-            {
-                this.Log("MobileAds initialized.");
-                LoadAd();
-            });
+            LoadAd();
+            this.Log("AppOpen initialized.");
         }
 
         public void Dispose()

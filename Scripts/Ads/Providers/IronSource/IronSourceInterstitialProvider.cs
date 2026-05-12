@@ -10,11 +10,6 @@ namespace HungNT
 
         public void Initialize(AdsConfig config)
         {
-            var appKey = config.IronSourceAppKey;
-            if (string.IsNullOrEmpty(appKey)) return;
-
-            IronSource.Agent.init(appKey, IronSourceAdUnits.INTERSTITIAL);
-
             IronSourceInterstitialEvents.onAdShowSucceededEvent += OnAdShowSucceeded;
             IronSourceInterstitialEvents.onAdShowFailedEvent += OnAdShowFailed;
             IronSourceInterstitialEvents.onAdClosedEvent += OnAdClosed;

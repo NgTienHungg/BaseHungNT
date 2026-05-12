@@ -2,15 +2,15 @@
 
 ## 1. Tổng quan
 
-Hệ thống Ads sử dụng **Strategy Pattern** với các provider riêng cho từng SDK:
+Hệ thống Ads sử dụng **Strategy Pattern** với các provider riêng cho từng SDK. Mỗi loại ads (AppOpen / Banner / Interstitial / Rewarded) có thể chọn **provider riêng** trong `AdsConfig` — ví dụ Inter dùng IronSource còn Rewarded dùng MAX.
 
 | SDK | Ad Formats | Define Symbol |
 |-----|-----------|---------------|
-| **Google AdMob** | App Open | `USE_ADMOB` |
+| **Google AdMob** | App Open, Banner, Interstitial, Rewarded | `USE_ADMOB` |
 | **AppLovin MAX** | Banner, Interstitial, Rewarded | `USE_MAX` |
 | **IronSource (LevelPlay)** | Banner, Interstitial, Rewarded | `USE_IRONSOURCE` |
 
-> **Lưu ý:** MAX và IronSource là hai lựa chọn thay thế nhau cho Banner/Inter/Rewarded. Chỉ nên bật một trong hai (`USE_MAX` hoặc `USE_IRONSOURCE`).
+> **Lưu ý:** App Open chỉ có sẵn cho AdMob trong bộ provider mặc định. Chọn MAX/IronSource cho App Open sẽ fallback về Null.
 
 ---
 
@@ -87,7 +87,21 @@ Ví dụ: `USE_ADMOB;USE_MAX`
    - Tạo folder `Resources/Configs/` nếu chưa có
    - Tên file phải là `AdsConfig`
 3. Mở config bằng menu: **HungNT > Ads > Open Ads Config**
-4. Điền ad keys vào các tab tương ứng (AdMob / MAX / IronSource)
+4. Cấu hình:
+   - **Tab "Providers"**: chọn SDK cho từng loại ads (AppOpen / Banner / Interstitial / Rewarded). Đặt `None` để vô hiệu hoá loại ads đó.
+   - **Tab "AdMob" / "MAX" / "IronSource"**: điền ad keys tương ứng với SDK đã chọn.
+
+### Ví dụ cấu hình mix-provider
+
+```
+App Open      = AdMob
+Banner        = MAX
+Interstitial  = IronSource
+Rewarded      = MAX
+```
+
+> Cấu hình này yêu cầu cả ba define symbol `USE_ADMOB;USE_MAX;USE_IRONSOURCE` và đã import đủ 3 SDK.
+> Nếu chọn provider mà thiếu define symbol, hệ thống sẽ fallback về Null và log warning trong Console.
 
 ---
 
@@ -146,4 +160,16 @@ public static partial class AdsPlacement
 
 - **Thêm constants:** Tạo file partial class `AdsDefine` riêng (vd: remote config keys)
 
-- **Thêm SDK provider mới:** Implement interface tương ứng (`IBannerAdProvider`, `IInterstitialAdProvider`, ...) và thêm `#if USE_XXX` block trong `AdsService.InitializeProviders()`
+- **Thêm SDK provider mới:**
+  1. Thêm giá trị mới vào enum `AdProvider`
+  2. Implement interface tương ứng (`IBannerAdProvider`, `IInterstitialAdProvider`, ...)
+  3. Thêm `case` trong các factory `CreateXxxProvider` của `AdsService`, kèm `#if USE_XXX`
+  4. Cập nhật `AdsService.InitializeSdks()` nếu SDK cần init bất đồng bộ
+
+---
+
+## 8. Lưu ý khi test trong Unity Editor
+
+- AdMob hiển thị **placeholder UI** trong Editor (prefab tại `Assets/GoogleMobileAds/Editor/Resources/PlaceholderAds/`). Placeholder dùng `UnityEngine.UI.Button` để hiển thị nút Close Ad.
+- Placeholder cần **EventSystem** trong scene để bấm được nút Close. `AdsService.Initialize` đã tự tạo EventSystem khi chạy trong Editor nếu scene chưa có (chỉ có hiệu lực `UNITY_EDITOR`). Trên thiết bị thật, ads là native overlay nên không cần EventSystem.
+- Nếu vẫn không bấm được close: kiểm tra Canvas khác trong scene có `Sorting Order` cao hơn 0 → placeholder bị che. Hạ Sort Order của Canvas đó hoặc tạm tắt khi test ads.

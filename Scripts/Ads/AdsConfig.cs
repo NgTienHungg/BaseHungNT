@@ -4,7 +4,8 @@ using UnityEngine;
 namespace HungNT
 {
     /// <summary>
-    /// ScriptableObject chứa tất cả ad unit keys cho từng SDK.
+    /// ScriptableObject chứa tất cả ad unit keys cho từng SDK
+    /// và mapping provider cho từng loại ads (App Open / Banner / Interstitial / Rewarded).
     /// Đặt tại Resources/Configs/AdsConfig.asset.
     /// Tạo qua menu: Assets > Create > HungNT > Ads > Ads Config.
     /// </summary>
@@ -14,7 +15,46 @@ namespace HungNT
         private const string TABS = "Tabs";
 
         // ╔════════════════════════════════════════════════════════════════════╗
-        // ║  AdMob                                                            ║
+        // ║  Common                                                            ║
+        // ╚════════════════════════════════════════════════════════════════════╝
+
+        [TabGroup(TABS, "Common")]
+        [TitleGroup(TABS + "/Common/Provider mapping")]
+        [InfoBox("Chọn SDK cho từng loại ads.\n" +
+                 "VD: <b>Interstitial = IronSource</b>, <b>Rewarded = MAX</b>.\n" +
+                 "Đặt 'None' để vô hiệu hoá loại ads đó.")]
+        [LabelText("App Open"), EnumToggleButtons]
+        [SerializeField] private AdProviderType appOpenProviderType = AdProviderType.None;
+
+        [TabGroup(TABS, "Common")]
+        [TitleGroup(TABS + "/Common/Provider mapping")]
+        [LabelText("Banner"), EnumToggleButtons]
+        [SerializeField] private AdProviderType bannerProviderType = AdProviderType.None;
+
+        [TabGroup(TABS, "Common")]
+        [TitleGroup(TABS + "/Common/Provider mapping")]
+        [LabelText("Interstitial"), EnumToggleButtons]
+        [SerializeField] private AdProviderType interProviderType = AdProviderType.None;
+
+        [TabGroup(TABS, "Common")]
+        [TitleGroup(TABS + "/Common/Provider mapping")]
+        [LabelText("Rewarded"), EnumToggleButtons]
+        [SerializeField] private AdProviderType rewardedProviderType = AdProviderType.None;
+
+        [TabGroup(TABS, "Common")]
+        [TitleGroup(TABS + "/Common/Cooldown (seconds)"), GUIColor(0.8f, 1f, 0.8f)]
+        [LabelText("Inter Cooldown")]
+        [Tooltip("Thời gian chờ tối thiểu (giây) giữa 2 lần show Interstitial.")]
+        [SerializeField] private float interCooldown = 30f;
+
+        [TabGroup(TABS, "Common")]
+        [TitleGroup(TABS + "/Common/Cooldown (seconds)"), GUIColor(0.8f, 1f, 0.8f)]
+        [LabelText("Reward → Inter Cooldown")]
+        [Tooltip("Sau khi show Rewarded, phải chờ bao lâu (giây) mới được show Interstitial.")]
+        [SerializeField] private float rewardToInterCooldown = 60f;
+
+        // ╔════════════════════════════════════════════════════════════════════╗
+        // ║  AdMob                                                             ║
         // ╚════════════════════════════════════════════════════════════════════╝
 
         [TabGroup(TABS, "AdMob")]
@@ -68,7 +108,7 @@ namespace HungNT
         [SerializeField] private string admobRewardedIdIOS = "ca-app-pub-3940256099942544/1712485313";
 
         // ╔════════════════════════════════════════════════════════════════════╗
-        // ║  MAX (AppLovin)                                                   ║
+        // ║  MAX (AppLovin)                                                    ║
         // ╚════════════════════════════════════════════════════════════════════╝
 
         [TabGroup(TABS, "MAX")]
@@ -107,7 +147,7 @@ namespace HungNT
         [SerializeField] private string maxRewardedIdIOS = "";
 
         // ╔════════════════════════════════════════════════════════════════════╗
-        // ║  IronSource                                                       ║
+        // ║  IronSource                                                        ║
         // ╚════════════════════════════════════════════════════════════════════╝
 
         [TabGroup(TABS, "IronSource")]
@@ -119,6 +159,37 @@ namespace HungNT
         [TitleGroup(TABS + "/IronSource/App Key"), GUIColor(0.6f, 0.9f, 0.6f)]
         [LabelText("iOS")]
         [SerializeField] private string ironSourceAppKeyIOS = "";
+
+        // ── Common ───────────────────────────────────────────────────────────
+
+        public AdProviderType AppOpenProviderType => appOpenProviderType;
+        public AdProviderType BannerProviderType => bannerProviderType;
+        public AdProviderType InterProviderType => interProviderType;
+        public AdProviderType RewardedProviderType => rewardedProviderType;
+
+        public float InterCooldown => interCooldown;
+        public float RewardToInterCooldown => rewardToInterCooldown;
+
+        /// <summary>True nếu bất kỳ loại ads nào đang dùng AdMob.</summary>
+        public bool UsesAdMob =>
+            appOpenProviderType == AdProviderType.AdMob ||
+            bannerProviderType == AdProviderType.AdMob ||
+            interProviderType == AdProviderType.AdMob ||
+            rewardedProviderType == AdProviderType.AdMob;
+
+        /// <summary>True nếu bất kỳ loại ads nào đang dùng AppLovin MAX.</summary>
+        public bool UsesMax =>
+            appOpenProviderType == AdProviderType.Max ||
+            bannerProviderType == AdProviderType.Max ||
+            interProviderType == AdProviderType.Max ||
+            rewardedProviderType == AdProviderType.Max;
+
+        /// <summary>True nếu bất kỳ loại ads nào đang dùng IronSource.</summary>
+        public bool UsesIronSource =>
+            appOpenProviderType == AdProviderType.IronSource ||
+            bannerProviderType == AdProviderType.IronSource ||
+            interProviderType == AdProviderType.IronSource ||
+            rewardedProviderType == AdProviderType.IronSource;
 
         // ── Platform Helpers ─────────────────────────────────────────────────
 

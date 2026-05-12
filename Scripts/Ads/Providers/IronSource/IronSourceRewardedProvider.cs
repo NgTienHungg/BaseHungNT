@@ -12,11 +12,6 @@ namespace HungNT
 
         public void Initialize(AdsConfig config)
         {
-            var appKey = config.IronSourceAppKey;
-            if (string.IsNullOrEmpty(appKey)) return;
-
-            IronSource.Agent.init(appKey, IronSourceAdUnits.REWARDED_VIDEO);
-
             IronSourceRewardedVideoEvents.onAdRewardedEvent += OnAdRewarded;
             IronSourceRewardedVideoEvents.onAdClosedEvent += OnAdClosed;
             IronSourceRewardedVideoEvents.onAdShowFailedEvent += OnAdShowFailed;
