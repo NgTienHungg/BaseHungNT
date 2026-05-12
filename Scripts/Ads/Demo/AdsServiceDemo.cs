@@ -9,11 +9,11 @@ namespace HungNT.Demo
     /// </summary>
     public class AdsServiceDemo : MonoBehaviour
     {
-        private IAdsService _ads;
+        private IAdsService _adsService;
 
         private void Start()
         {
-            this.GetService<IAdsService>(ads => _ads = ads);
+            this.GetService<IAdsService>(service => _adsService = service);
         }
 
         // ── Banner ───────────────────────────────────────────────────────────
@@ -21,14 +21,14 @@ namespace HungNT.Demo
         [Button]
         public void ShowBanner()
         {
-            _ads.ShowBanner();
+            _adsService.ShowBanner();
             this.Log("ShowBanner called.");
         }
 
         [Button]
         public void HideBanner()
         {
-            _ads.HideBanner();
+            _adsService.HideBanner();
             this.Log("HideBanner called.");
         }
 
@@ -37,7 +37,7 @@ namespace HungNT.Demo
         [Button]
         public void ShowAppOpen()
         {
-            _ads.ShowAppOpen(onComplete: () =>
+            _adsService.ShowAppOpen(onComplete: () =>
             {
                 this.Log("AppOpen completed.");
             });
@@ -48,26 +48,26 @@ namespace HungNT.Demo
         [Button]
         public void CheckInterstitialReady()
         {
-            this.Log($"IsInterstitialReady: {_ads.IsInterstitialReady()}");
+            this.Log($"IsInterstitialReady: {_adsService.IsInterstitialReady()}");
         }
 
         [Button]
         public void ShowInterstitialDefault()
         {
-            _ads.ShowInterstitial(
-                placement: AdsPlacement.DEFAULT,
-                onSuccess: () => this.Log("Interstitial — success."),
-                onFailure: () => this.Log("Interstitial — failure (cooldown / not ready).")
+            _adsService.ShowInterstitial(
+                placement: AdsPlacement.DEFAULT
+                // onSuccess: () => this.Log("Interstitial — success."),
+                // onFailure: () => this.Log("Interstitial — failure (cooldown / not ready).")
             );
         }
 
         [Button]
         public void ShowInterstitialLevelComplete()
         {
-            _ads.ShowInterstitial(
-                placement: AdsPlacement.LEVEL_COMPLETE,
-                onSuccess: () => this.Log("Interstitial level_complete — success."),
-                onFailure: () => this.Log("Interstitial level_complete — failure.")
+            _adsService.ShowInterstitial(
+                placement: AdsPlacement.LEVEL_COMPLETE
+                // onSuccess: () => this.Log("Interstitial level_complete — success."),
+                // onFailure: () => this.Log("Interstitial level_complete — failure.")
             );
         }
 
@@ -76,41 +76,37 @@ namespace HungNT.Demo
         [Button]
         public void CheckRewardedReady()
         {
-            this.Log($"IsRewardedReady: {_ads.IsRewardedReady()}");
+            this.Log($"IsRewardedReady: {_adsService.IsRewardedReady()}");
         }
 
         [Button]
         public void ShowRewardedDoubleCoin()
         {
-            _ads.ShowRewarded(
+            _adsService.ShowRewarded(
                 placement: AdsPlacement.DOUBLE_COIN,
-                onSuccess: () =>
-                {
-                    this.Log("Rewarded double_coin — user earned reward!");
-                    // GiveReward();
-                },
-                onFailure: () =>
-                {
-                    this.Log("Rewarded double_coin — failed or closed early.");
-                }
+                onSuccess: OnGetRewardSuccess,
+                onFailure: OnGetRewardFailure
             );
         }
 
         [Button]
         public void ShowRewardedExtraLife()
         {
-            _ads.ShowRewarded(
+            _adsService.ShowRewarded(
                 placement: AdsPlacement.EXTRA_LIFE,
-                onSuccess: () =>
-                {
-                    this.Log("Rewarded extra_life — user earned reward!");
-                    // GiveExtraLife();
-                },
-                onFailure: () =>
-                {
-                    this.Log("Rewarded extra_life — failed or closed early.");
-                }
+                onSuccess: OnGetRewardSuccess,
+                onFailure: OnGetRewardFailure
             );
+        }
+
+        private void OnGetRewardSuccess()
+        {
+            this.Log("Get reward ads success!".Color("lime"));
+        }
+
+        private void OnGetRewardFailure()
+        {
+            this.Log("Get reward ads failure!".Color("red"));
         }
     }
 }
