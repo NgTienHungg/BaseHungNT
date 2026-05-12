@@ -140,12 +140,12 @@ namespace HungNT
 #if USE_ADMOB
                     return new AdMobAppOpenProvider();
 #else
-                    WarnMissingDefine(type, "AppOpen", "USE_ADMOB");
+                    WarnMissingDefine(AdType.AppOpen, type);
                     return new NullAppOpenAdProvider();
 #endif
                 case AdProviderType.Max:
                 case AdProviderType.IronSource:
-                    this.LogWarning($"AppOpen provider {type} is not implemented. Falling back to Null.");
+                    this.LogWarning($"{AdType.AppOpen} provider {type} is not implemented. Falling back to Null.");
                     return new NullAppOpenAdProvider();
                 default:
                     return new NullAppOpenAdProvider();
@@ -160,21 +160,21 @@ namespace HungNT
 #if USE_ADMOB
                     return new AdMobBannerProvider();
 #else
-                    WarnMissingDefine(type, "Banner", "USE_ADMOB");
+                    WarnMissingDefine(AdType.Banner, type);
                     return new NullBannerAdProvider();
 #endif
                 case AdProviderType.Max:
 #if USE_MAX
                     return new MaxBannerProvider();
 #else
-                    WarnMissingDefine(type, "Banner", "USE_MAX");
+                    WarnMissingDefine(AdType.Banner, type);
                     return new NullBannerAdProvider();
 #endif
                 case AdProviderType.IronSource:
 #if USE_IRONSOURCE
                     return new IronSourceBannerProvider();
 #else
-                    WarnMissingDefine(type, "Banner", "USE_IRONSOURCE");
+                    WarnMissingDefine(AdType.Banner, type);
                     return new NullBannerAdProvider();
 #endif
                 default:
@@ -190,21 +190,21 @@ namespace HungNT
 #if USE_ADMOB
                     return new AdMobInterstitialProvider();
 #else
-                    WarnMissingDefine(type, "Interstitial", "USE_ADMOB");
+                    WarnMissingDefine(AdType.Interstitial, type);
                     return new NullInterstitialAdProvider();
 #endif
                 case AdProviderType.Max:
 #if USE_MAX
                     return new MaxInterstitialProvider();
 #else
-                    WarnMissingDefine(type, "Interstitial", "USE_MAX");
+                    WarnMissingDefine(AdType.Interstitial, type);
                     return new NullInterstitialAdProvider();
 #endif
                 case AdProviderType.IronSource:
 #if USE_IRONSOURCE
                     return new IronSourceInterstitialProvider();
 #else
-                    WarnMissingDefine(type, "Interstitial", "USE_IRONSOURCE");
+                    WarnMissingDefine(AdType.Interstitial, type);
                     return new NullInterstitialAdProvider();
 #endif
                 default:
@@ -220,21 +220,21 @@ namespace HungNT
 #if USE_ADMOB
                     return new AdMobRewardedProvider();
 #else
-                    WarnMissingDefine(type, "Rewarded", "USE_ADMOB");
+                    WarnMissingDefine(AdType.Rewarded, type);
                     return new NullRewardedAdProvider();
 #endif
                 case AdProviderType.Max:
 #if USE_MAX
                     return new MaxRewardedProvider();
 #else
-                    WarnMissingDefine(type, "Rewarded", "USE_MAX");
+                    WarnMissingDefine(AdType.Rewarded, type);
                     return new NullRewardedAdProvider();
 #endif
                 case AdProviderType.IronSource:
 #if USE_IRONSOURCE
                     return new IronSourceRewardedProvider();
 #else
-                    WarnMissingDefine(type, "Rewarded", "USE_IRONSOURCE");
+                    WarnMissingDefine(AdType.Rewarded, type);
                     return new NullRewardedAdProvider();
 #endif
                 default:
@@ -242,9 +242,10 @@ namespace HungNT
             }
         }
 
-        private void WarnMissingDefine(AdProviderType type, string adType, string defineSymbol)
+        private void WarnMissingDefine(AdType adType, AdProviderType providerType)
         {
-            this.LogWarning($"{adType} provider set to {type} but define symbol '{defineSymbol}' is missing. " +
+            var symbol = AdsDefine.GetDefineSymbol(providerType);
+            this.LogWarning($"{adType} provider set to {providerType} but define symbol '{symbol}' is missing. " +
                             $"Add it in Project Settings > Player > Scripting Define Symbols. Falling back to Null.");
         }
 
