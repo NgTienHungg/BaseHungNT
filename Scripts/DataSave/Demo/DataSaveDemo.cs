@@ -1,62 +1,107 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace HungNT.Demo
 {
     /// <summary>
-    /// Demo: Cách sử dụng DataSaveManager.
-    /// <para>Gắn lên GameObject, Play Mode → nhấn các nút trong Inspector.</para>
+    /// Demo IDatasaveService — gắn lên cùng scene với DataSaveService và ServiceRegister.
     /// </summary>
     public class DataSaveDemo : MonoBehaviour
     {
-        [Button("Load PlayerSave")]
-        public void LoadPlayer()
+        // ── Runtime state (Odin Inspector) ───────────────────────────────────
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Coin")]
+        private CoinSave _coin;
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Level")]
+        private LevelSave _level;
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Profile")]
+        private UserProfileSave _profile;
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Settings")]
+        private SettingsSave _settings;
+
+        [ShowInInspector, ReadOnly, FoldoutGroup("Unlock")]
+        private UnlockSave _unlock;
+
+        private IDatasaveService _saveService;
+
+        // ── Unity ────────────────────────────────────────────────────────────
+
+        private void Start()
         {
-            var save = DataSaveManager.Instance.Get<DemoPlayerSave>();
-            Debug.Log($"[DataSave Demo] Name={save.PlayerName}, Gold={save.Gold}, Level={save.Level}");
+            _saveService = this.GetService<IDatasaveService>();
+            RefreshDisplay();
         }
 
-        [Button("Add 100 Gold & Save")]
-        public void AddGold()
+        // ── Demo Buttons ─────────────────────────────────────────────────────
+
+        [Button("Load All"), FoldoutGroup("Actions")]
+        private void RefreshDisplay()
         {
-            var save = DataSaveManager.Instance.Get<DemoPlayerSave>();
-            save.Gold += 100;
-            DataSaveManager.Instance.Save(save);
-            Debug.Log($"[DataSave Demo] Gold is now {save.Gold}");
+            _coin     = _saveService.GetData<CoinSave>();
+            _level    = _saveService.GetData<LevelSave>();
+            _profile  = _saveService.GetData<UserProfileSave>();
+            _settings = _saveService.GetData<SettingsSave>();
+            _unlock   = _saveService.GetData<UnlockSave>();
         }
 
-        [Button("Level Up & Save")]
-        public void LevelUp()
+        [Button("+100 Coin"), FoldoutGroup("Actions")]
+        private void AddCoin()
         {
-            var save = DataSaveManager.Instance.Get<DemoPlayerSave>();
-            save.Level++;
-            DataSaveManager.Instance.Save(save);
-            Debug.Log($"[DataSave Demo] Level is now {save.Level}");
+            var data = _saveService.GetData<CoinSave>();
+            data.Amount += 100;
+            _saveService.Save(data);
+            _coin = data;
         }
 
-        [Button("Delete PlayerSave")]
-        public void DeleteSave()
+        [Button("Next Level"), FoldoutGroup("Actions")]
+        private void NextLevel()
         {
-            DataSaveManager.Instance.Delete<DemoPlayerSave>();
-            Debug.Log("[DataSave Demo] PlayerSave deleted.");
+            var data = _saveService.GetData<LevelSave>();
+            data.SetStars(data.CurrentLevel, 3);
+            data.CurrentLevel++;
+            data.MaxUnlockedLevel = data.CurrentLevel;
+            _saveService.Save(data);
+            _level = data;
         }
 
-        [Button("Save All")]
-        public void SaveAll()
+        [Button("Change Username"), FoldoutGroup("Actions")]
+        private void ChangeUsername()
         {
-            DataSaveManager.Instance.SaveAll();
-            Debug.Log("[DataSave Demo] All saves flushed.");
+            var data = _saveService.GetData<UserProfileSave>();
+            data.Username = $"Player_{Random.Range(1000, 9999)}";
+            _saveService.Save(data);
+            _profile = data;
         }
-    }
 
-    // ── Demo Data ────────────────────────────────────────────────────────────
+        [Button("Toggle Vibration"), FoldoutGroup("Actions")]
+        private void ToggleVibration()
+        {
+            var data = _saveService.GetData<SettingsSave>();
+            data.Vibration = !data.Vibration;
+            _saveService.Save(data);
+            _settings = data;
+        }
 
-    [Serializable]
-    public class DemoPlayerSave : BaseUserData
-    {
-        public string PlayerName = "Hero";
-        public int Gold;
-        public int Level = 1;
+        [Button("Unlock Item_001"), FoldoutGroup("Actions")]
+        private void UnlockItem()
+        {
+            var data = _saveService.GetData<UnlockSave>();
+            data.Unlock("Item_001");
+            _saveService.Save(data);
+            _unlock = data;
+        }
+
+        [Button("Save All"), FoldoutGroup("Actions")]
+        private void SaveAll() => _saveService.SaveAll();
+
+        [Button("DELETE ALL SAVE DATA"), FoldoutGroup("Actions")]
+        private void DeleteAll()
+        {
+            _saveService.DeleteAll();
+            RefreshDisplay();
+        }
     }
 }
