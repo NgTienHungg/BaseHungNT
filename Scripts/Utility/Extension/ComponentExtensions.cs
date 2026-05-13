@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HungNT
@@ -12,7 +11,17 @@ namespace HungNT
 
         public static T GetOrAddComponent<T>(this Component component) where T : Component
         {
-            return component.gameObject.GetOrAddComponent<T>();
+            if (component == null)
+            {
+                return null;
+            }
+
+            if (component.TryGetComponent(out T existingComponent))
+            {
+                return existingComponent;
+            }
+
+            return component.gameObject.AddComponent<T>();
         }
 
         public static void DestroyGameObject<T>(this T component) where T : Component

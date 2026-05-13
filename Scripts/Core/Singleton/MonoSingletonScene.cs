@@ -15,7 +15,7 @@ namespace HungNT
                 {
                     lock (_lock)
                     {
-                        _instance = FindObjectOfType<TMono>(includeInactive: true);
+                        _instance = FindFirstObjectByType<TMono>();
 
                         // create new instance
                         if (_instance == null)

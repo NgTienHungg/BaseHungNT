@@ -15,7 +15,7 @@ namespace HungNT
                 {
                     lock (_lock) // Đảm bảo thread-safe nếu chạy ở môi trường multi-thread
                     {
-                        _instance = FindObjectOfType<TMono>(includeInactive: true);
+                        _instance = FindFirstObjectByType<TMono>();
 
                         // create new instance
                         if (_instance == null)
