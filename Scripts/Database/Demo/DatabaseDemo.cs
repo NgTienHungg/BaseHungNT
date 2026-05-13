@@ -1,79 +1,76 @@
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace HungNT.Demo
 {
     /// <summary>
-    /// Demo: Cách sử dụng DatabaseManager + BaseDataTable.
-    /// <para>1. Tạo ScriptableObject "DemoEnemyTable" (Create → Database → DemoEnemyTable).</para>
-    /// <para>2. Thêm data vào array Enemies trong Inspector.</para>
-    /// <para>3. Kéo vào DatabaseManager._tables hoặc gọi Register runtime.</para>
-    /// <para>4. Play Mode → nhấn nút trong Inspector.</para>
-    ///
-    /// <para><b>Với DataLab (Google Sheets):</b></para>
-    /// <para>Thêm <c>[ContentAsset(ImportType.Automatic)]</c> lên class,</para>
-    /// <para>dùng <c>[ArrayContent("SheetName")]</c> trên array field,</para>
-    /// <para>và <c>[ColumnName("column_name")]</c> trên entity field.</para>
+    /// Demo IDatabaseService với ItemTable.
+    /// <para>Điều kiện:</para>
+    /// <list type="bullet">
+    ///   <item>Tạo ScriptableObject ItemTable tại <c>Assets/Resources/Database/ItemTable.asset</c></item>
+    ///   <item>Có GameObject trong scene với DatabaseService + ServiceRegister đã register IDatabaseService</item>
+    /// </list>
     /// </summary>
     public class DatabaseDemo : MonoBehaviour
     {
-        [Button("Get All Enemies")]
-        public void GetAllEnemies()
-        {
-            var table = DatabaseManager.Instance.GetTable<DemoEnemyTable>();
-            if (table == null) return;
+        [ShowInInspector, ReadOnly, TableList]
+        private IReadOnlyList<ItemEntity> _displayedItems;
 
-            foreach (var e in table.Enemies)
-                Debug.Log($"[DB Demo] Enemy: {e.Name}, HP={e.Hp}, ATK={e.Atk}");
+        private IDatabaseService _db;
+
+        private void Start()
+        {
+            _db = this.GetService<IDatabaseService>();
+            ShowAll();
         }
 
-        [Button("Find Enemy by Id")]
-        public void FindEnemy()
+        // ── Buttons ───────────────────────────────────────────────────────────
+
+        [Button("Show All Items"), FoldoutGroup("Query")]
+        private void ShowAll()
         {
-            var table = DatabaseManager.Instance.GetTable<DemoEnemyTable>();
-            if (table == null) return;
-
-            var enemy = table.Enemies.FirstOrDefault(e => e.Id == 1);
-            if (enemy != null)
-                Debug.Log($"[DB Demo] Found: {enemy.Name}");
-            else
-                Debug.LogWarning("[DB Demo] Enemy with Id=1 not found.");
+            if (!_db.TryGetTable<ItemTable>(out var table)) return;
+            _displayedItems = table.GetAll();
         }
-    }
 
-    // ── Demo Table & Entity ──────────────────────────────────────────────────
+        [Button("Filter: Free Items"), FoldoutGroup("Query")]
+        private void ShowFree()
+        {
+            if (!_db.TryGetTable<ItemTable>(out var table)) return;
+            _displayedItems = table.GetByUnlockType(UnlockType.Free);
+        }
 
-    /// <summary>
-    /// Demo table — kế thừa BaseDataTable.
-    /// <para>Khi dùng DataLab, thêm [ContentAsset(ImportType.Automatic)] ở đây</para>
-    /// <para>và [ArrayContent("SheetName")] trên array field.</para>
-    /// </summary>
-    [CreateAssetMenu(menuName = "HungNT/Demo/DemoEnemyTable")]
-    public class DemoEnemyTable : BaseDataTable
-    {
-        // Nếu dùng DataLab: [ArrayContent("EnemySheet")]
-        public DemoEnemyEntity[] Enemies;
-    }
+        [Button("Filter: Coin Items"), FoldoutGroup("Query")]
+        private void ShowCoin()
+        {
+            if (!_db.TryGetTable<ItemTable>(out var table)) return;
+            _displayedItems = table.GetByUnlockType(UnlockType.Coin);
+        }
 
-    /// <summary>
-    /// Demo entity — implement IDataModel.
-    /// <para>Nếu dùng DataLab, thêm [ColumnName("column_name")] trên mỗi field.</para>
-    /// </summary>
-    [Serializable]
-    public class DemoEnemyEntity : IDataModel
-    {
-        // Nếu dùng DataLab: [ColumnName("id")]
-        public int Id;
+        [Button("Filter: Ads Items"), FoldoutGroup("Query")]
+        private void ShowAds()
+        {
+            if (!_db.TryGetTable<ItemTable>(out var table)) return;
+            _displayedItems = table.GetByUnlockType(UnlockType.Ads);
+        }
 
-        // Nếu dùng DataLab: [ColumnName("name")]
-        public string Name;
+        [Button("Filter: Category Ao"), FoldoutGroup("Query")]
+        private void ShowAo()
+        {
+            if (!_db.TryGetTable<ItemTable>(out var table)) return;
+            _displayedItems = table.GetByCategory(ItemCategory.Ao);
+        }
 
-        // Nếu dùng DataLab: [ColumnName("hp")]
-        public int Hp;
+        [SerializeField, FoldoutGroup("Query")] private string _findId = "item_001";
 
-        // Nếu dùng DataLab: [ColumnName("atk")]
-        public int Atk;
+        [Button("Find By Id"), FoldoutGroup("Query")]
+        private void FindById()
+        {
+            if (!_db.TryGetTable<ItemTable>(out var table)) return;
+            var item = table.GetById(_findId);
+            if (item != null)
+                Debug.Log($"[Demo] Found: {item.Name} | {item.Category} | {item.UnlockType}");
+        }
     }
 }

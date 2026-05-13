@@ -3,21 +3,20 @@ using System;
 namespace HungNT
 {
     /// <summary>
-    /// Abstract base cho mỗi "khối" dữ liệu người dùng cần lưu.
-    /// <para>Kế thừa và thêm các field cần lưu (phải [Serializable]).</para>
+    /// Abstract base cho mỗi "khối" dữ liệu người chơi cần lưu.
+    /// <para>Kế thừa, thêm các field [Serializable], gọi service để save/load.</para>
     /// <code>
     /// [Serializable]
-    /// public class CurrencySave : BaseUserData
+    /// public class CoinSave : BaseUserData
     /// {
-    ///     public int Gold;
-    ///     public int Gem;
+    ///     public long Amount = 0;
     /// }
     /// </code>
     /// </summary>
     [Serializable]
     public abstract class BaseUserData
     {
-        /// <summary>Key dùng để save/load. Mặc định = tên class.</summary>
+        /// <summary>Key dùng để save/load với ES3. Mặc định = tên class.</summary>
         public string Key { get; private set; }
 
         protected BaseUserData()
@@ -25,13 +24,14 @@ namespace HungNT
             Key = GetType().Name;
         }
 
-        protected BaseUserData(string key)
+        protected BaseUserData(string customKey)
         {
-            Key = key;
+            Key = customKey;
         }
 
         /// <summary>
-        /// Gọi sau khi load — override để sửa data cũ / migration.
+        /// Gọi ngay sau khi load từ disk.
+        /// Override để migration / fix data cũ.
         /// </summary>
         public virtual void OnAfterLoad() { }
     }
