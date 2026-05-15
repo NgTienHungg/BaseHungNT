@@ -14,7 +14,7 @@ namespace HungNT
 
             if (string.IsNullOrEmpty(_adUnitId)) return;
 
-            MaxSdk.CreateBanner(_adUnitId, MaxSdkBase.BannerPosition.BottomCenter);
+            MaxSdk.CreateBanner(_adUnitId, new MaxSdkBase.AdViewConfiguration(MaxSdkBase.AdViewPosition.BottomCenter));
             MaxSdk.SetBannerBackgroundColor(_adUnitId, Color.black);
 
             this.Log("Banner initialized.");

@@ -126,7 +126,8 @@ namespace HungNT
             _interProvider.Initialize(config);
             _rewardedProvider.Initialize(config);
 
-            this.Log($"AdsService initialized — AppOpen: {config.AppOpenProviderType.ToString().Bold()}, " +
+            this.Log("AdsService initialized: ".Color("lime") +
+                     $"AppOpen: {config.AppOpenProviderType.ToString().Bold()}, " +
                      $"Banner: {config.BannerProviderType.ToString().Bold()}, " +
                      $"Inter: {config.InterProviderType.ToString().Bold()}, " +
                      $"Rewarded: {config.RewardedProviderType.ToString().Bold()}");
