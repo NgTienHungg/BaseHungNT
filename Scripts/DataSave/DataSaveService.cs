@@ -7,7 +7,7 @@ namespace HungNT
 {
     /// <summary>
     /// Implementation của <see cref="IDatasaveService"/> — dùng EasySave3 (ES3) làm backend.
-    /// <para>Gắn lên cùng GameObject với <see cref="ServiceRegister"/> để tự đăng ký.</para>
+    /// <para>Gắn lên cùng GameObject với <see cref="T:HungNT.ServiceRegister"/> để tự đăng ký.</para>
     /// </summary>
     public class DataSaveService : MonoBehaviour, IDatasaveService
     {

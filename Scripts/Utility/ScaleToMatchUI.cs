@@ -1,4 +1,5 @@
 using UnityEngine;
+using HungNT;
 
 namespace HungNT
 {

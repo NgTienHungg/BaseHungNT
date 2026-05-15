@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HungNT
@@ -15,7 +14,7 @@ namespace HungNT
             get
             {
                 if (_rectTransform == null)
-                    _rectTransform = gameObject.GetOrAddComponent<RectTransform>();
+                    _rectTransform = this.GetOrAddComponent<RectTransform>();
 
                 return _rectTransform;
             }
@@ -26,7 +25,7 @@ namespace HungNT
             get
             {
                 if (_canvasGroup == false)
-                    _canvasGroup = gameObject.GetOrAddComponent<CanvasGroup>();
+                    _canvasGroup = this.GetOrAddComponent<CanvasGroup>();
 
                 return _canvasGroup;
             }

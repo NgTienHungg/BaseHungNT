@@ -1,8 +1,10 @@
+using HungNT;
+
 namespace HungNT
 {
     /// <summary>
     /// Service lưu/load dữ liệu người chơi.
-    /// Register vào <see cref="ServiceLocator"/> qua <see cref="ServiceRegister"/>.
+    /// Register vào <see cref="T:HungNT.ServiceLocator"/> qua <see cref="T:HungNT.ServiceRegister"/>.
     /// <code>
     /// var save = this.GetService&lt;IDatasaveService&gt;();
     /// var coin = save.GetData&lt;CoinSave&gt;();

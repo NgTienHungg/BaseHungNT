@@ -1,3 +1,4 @@
+using HungNT;
 #if HUNGNT_ADDRESSABLE
 using Cysharp.Threading.Tasks;
 using UnityEngine;

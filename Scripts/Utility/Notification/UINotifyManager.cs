@@ -1,3 +1,4 @@
+using HungNT;
 #if HUNGNT_TWEEN
 using UnityEngine;
 

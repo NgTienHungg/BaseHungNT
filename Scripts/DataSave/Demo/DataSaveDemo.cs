@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
+using HungNT;
 
 namespace HungNT.Demo
 {
