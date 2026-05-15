@@ -1,20 +1,17 @@
 using System;
 using System.Collections.Generic;
-using DataLabs.GoogleSheets.Runtime;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace HungNT
+namespace HungNT.Database
 {
     // ── Enums ────────────────────────────────────────────────────────────────
 
     public enum ItemCategory
     {
-        Quan,       // quần
-        Ao,         // áo
-        Mu,         // mũ
-        Toc,        // tóc
-        PhuKien     // phụ kiện
+        Armor,
+        Weapon,
+        Accessory,
     }
 
     public enum UnlockType
@@ -24,14 +21,14 @@ namespace HungNT
         Coin
     }
 
-    // ── Entity ───────────────────────────────────────────────────────────────
+    // ── Data ─────────────────────────────────────────────────────────────────
 
     /// <summary>
     /// Dữ liệu của một item trong game.
-    /// Mỗi field tương ứng một cột trên Google Sheet qua DataLab.
+    /// Mỗi field tương ứng một cột trên Google Sheet qua GGSheet.
     /// </summary>
     [Serializable]
-    public class ItemEntity : IDataModelWithId<string>
+    public class ItemData
     {
         [Content, ColumnName("id")]
         public string Id;
@@ -64,25 +61,25 @@ namespace HungNT
     // ── Table ────────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// ScriptableObject chứa toàn bộ <see cref="ItemEntity"/>.
+    /// ScriptableObject chứa toàn bộ <see cref="ItemData"/>.
     /// <para>Đặt file tại: <c>Assets/Resources/Database/ItemTable.asset</c></para>
-    /// <para>Import từ Google Sheet qua DataLab (worksheet tên "Items").</para>
+    /// <para>Import từ Google Sheet qua GGSheet (worksheet tên "ItemTable").</para>
     /// </summary>
-    [ContentAsset(ImportType.Automatic, primaryKey: "id")]
-    [CreateAssetMenu(menuName = "HungNT/Database/ItemTable", fileName = "ItemTable")]
+    [ContentAsset]
+    [CreateAssetMenu(menuName = "Game/Database/ItemTable", fileName = "ItemTable")]
     public class ItemTable : BaseDataTable
     {
-        [ArrayContent("Items")]
+        [ArrayContent("ItemTable")]
         [TableList(ShowIndexLabels = true)]
-        public ItemEntity[] Items = Array.Empty<ItemEntity>();
+        public ItemData[] Items = Array.Empty<ItemData>();
 
         // ── Lookup ────────────────────────────────────────────────────────────
 
-        private Dictionary<string, ItemEntity> _lookup;
+        private Dictionary<string, ItemData> _lookup;
 
         public override void Initialize()
         {
-            _lookup = new Dictionary<string, ItemEntity>(Items.Length);
+            _lookup = new Dictionary<string, ItemData>(Items.Length);
             foreach (var item in Items)
             {
                 if (string.IsNullOrEmpty(item.Id))
@@ -96,7 +93,7 @@ namespace HungNT
 
         // ── API ───────────────────────────────────────────────────────────────
 
-        public ItemEntity GetById(string id)
+        public ItemData GetById(string id)
         {
             if (_lookup != null && _lookup.TryGetValue(id, out var item))
                 return item;
@@ -105,24 +102,24 @@ namespace HungNT
             return null;
         }
 
-        public IReadOnlyList<ItemEntity> GetByCategory(ItemCategory category)
+        public IReadOnlyList<ItemData> GetByCategory(ItemCategory category)
         {
-            var result = new List<ItemEntity>();
+            var result = new List<ItemData>();
             foreach (var item in Items)
                 if (item.Category == category)
                     result.Add(item);
             return result;
         }
 
-        public IReadOnlyList<ItemEntity> GetByUnlockType(UnlockType type)
+        public IReadOnlyList<ItemData> GetByUnlockType(UnlockType type)
         {
-            var result = new List<ItemEntity>();
+            var result = new List<ItemData>();
             foreach (var item in Items)
                 if (item.UnlockType == type)
                     result.Add(item);
             return result;
         }
 
-        public IReadOnlyList<ItemEntity> GetAll() => Items;
+        public IReadOnlyList<ItemData> GetAll() => Items;
     }
 }

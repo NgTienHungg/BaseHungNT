@@ -1,4 +1,4 @@
-namespace HungNT
+namespace HungNT.Database
 {
     /// <summary>
     /// Interface cho một database table (ScriptableObject chứa config data).

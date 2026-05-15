@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using HungNT;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace HungNT.Demo
+namespace HungNT.Database
 {
     /// <summary>
     /// Demo IDatabaseService với ItemTable.
@@ -15,7 +16,7 @@ namespace HungNT.Demo
     public class DatabaseDemo : MonoBehaviour
     {
         [ShowInInspector, ReadOnly, TableList]
-        private IReadOnlyList<ItemEntity> _displayedItems;
+        private IReadOnlyList<ItemData> _displayedItems;
 
         private IDatabaseService _db;
 
@@ -59,7 +60,7 @@ namespace HungNT.Demo
         private void ShowAo()
         {
             if (!_db.TryGetTable<ItemTable>(out var table)) return;
-            _displayedItems = table.GetByCategory(ItemCategory.Ao);
+            _displayedItems = table.GetByCategory(ItemCategory.Armor);
         }
 
         [SerializeField, FoldoutGroup("Query")] private string _findId = "item_001";

@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace HungNT
+namespace HungNT.Database
 {
     /// <summary>
     /// Implementation của <see cref="IDatabaseService"/>.
     /// Load tất cả <see cref="BaseDataTable"/> ScriptableObject từ <c>Resources/Database/</c>
     /// rồi Initialize và đăng ký vào registry.
-    /// <para>Gắn lên cùng GameObject với <see cref="ServiceRegister"/> để tự đăng ký.</para>
     /// </summary>
     public class DatabaseService : MonoBehaviour, IDatabaseService
     {
         private const string ResourcesPath = "Database";
 
-        [ShowInInspector, ReadOnly, DictionaryDrawerSettings(IsReadOnly = true)]
-        private readonly Dictionary<Type, BaseDataTable> _registry = new();
+        [ShowInInspector]
+        private Dictionary<Type, BaseDataTable> _registry = new();
 
         // ── IService ─────────────────────────────────────────────────────────
 
@@ -25,7 +24,9 @@ namespace HungNT
             LoadAllFromResources();
         }
 
-        public void LateInitialize() { }
+        public void LateInitialize()
+        {
+        }
 
         // ── IDatabaseService ─────────────────────────────────────────────────
 
@@ -71,16 +72,16 @@ namespace HungNT
                 var type = asset.GetType();
                 if (_registry.ContainsKey(type))
                 {
-                    this.Log($"Duplicate table type '{type.Name}' — skipping second asset '{asset.name}'.");
+                    this.LogWarning($"Duplicate table type '{type.Name}' — skipping second asset '{asset.name.Color("red")}'.");
                     continue;
                 }
 
                 asset.Initialize();
                 _registry[type] = asset;
-                this.Log($"Loaded table: {type.Name} ({asset.name})");
+                this.Log($"Loaded table: {type.Name.Color("cyan")} (name: {asset.name})");
             }
 
-            this.Log($"Database ready. {_registry.Count} table(s) loaded.");
+            this.Log($"Database ready. {_registry.Count} table(s) loaded.".Color("lime"));
         }
 
 #if UNITY_EDITOR

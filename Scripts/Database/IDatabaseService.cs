@@ -1,13 +1,7 @@
-namespace HungNT
+namespace HungNT.Database
 {
     /// <summary>
     /// Service quản lý và cung cấp truy cập vào các <see cref="IDataTable"/>.
-    /// Register vào <see cref="ServiceLocator"/> qua <see cref="ServiceRegister"/>.
-    /// <para>Tất cả ScriptableObject tables được load tự động từ <c>Resources/Database/</c>.</para>
-    /// <code>
-    /// var db = this.GetService&lt;IDatabaseService&gt;();
-    /// var table = db.GetTable&lt;ItemTable&gt;();
-    /// </code>
     /// </summary>
     public interface IDatabaseService : IService
     {
