@@ -71,7 +71,7 @@ namespace HungNT
             }
 
             _services[serviceType] = impl;
-            this.Log($"Register({serviceType.Name}) — {impl.GetType().Name.Color("cyan")}.");
+            this.Log($"Register: {serviceType.Name.Color("cyan")} — {impl.GetType().Name.Color("yellow")}.");
             FlushPendingCallbacks(serviceType, impl);
         }
 
