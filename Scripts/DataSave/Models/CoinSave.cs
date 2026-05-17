@@ -1,28 +1,39 @@
-using System;
-
-namespace HungNT
-{
-    /// <summary>Lưu số coin (soft currency) của người chơi.</summary>
-    [Serializable]
-    public class CoinSave : BaseUserData
-    {
-        public long Amount = 0;
-
-        public override void OnAfterLoad()
-        {
-            if (Amount < 0) Amount = 0;
-        }
-    }
-
-    /// <summary>Lưu số gem (hard currency / premium currency) của người chơi.</summary>
-    [Serializable]
-    public class GemSave : BaseUserData
-    {
-        public long Amount = 0;
-
-        public override void OnAfterLoad()
-        {
-            if (Amount < 0) Amount = 0;
-        }
-    }
-}
+// using System;
+// using HungNT.Datasave;
+//
+// namespace HungNT
+// {
+//     /// <summary>Lưu số coin (soft currency) trong một domain file riêng.</summary>
+//     [Serializable]
+//     public class CoinSave : BaseSaveData
+//     {
+//         public override string SaveFileName => "domain_coin.es3";
+//
+//         public override string RootStorageKey => "coin";
+//
+//         public long Amount;
+//
+//         public override void OnAfterLoad()
+//         {
+//             if (Amount < 0)
+//                 Amount = 0;
+//         }
+//     }
+//
+//     /// <summary>Lưu số gem (hard currency) trong một domain file riêng.</summary>
+//     [Serializable]
+//     public class GemSave : BaseSaveData
+//     {
+//         public override string SaveFileName => "domain_gem.es3";
+//
+//         public override string RootStorageKey => "gem";
+//
+//         public long Amount;
+//
+//         public override void OnAfterLoad()
+//         {
+//             if (Amount < 0)
+//                 Amount = 0;
+//         }
+//     }
+// }
