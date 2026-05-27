@@ -1,8 +1,7 @@
 using HungNT;
-#if HUNGNT_TWEEN
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT.UI.Tween
 {
     public class UINotifyManager : MonoSingleton<UINotifyManager>
     {
@@ -23,4 +22,3 @@ namespace WingsMob.HungNT
         }
     }
 }
-#endif

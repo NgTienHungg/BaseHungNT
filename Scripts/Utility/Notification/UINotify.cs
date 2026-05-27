@@ -1,9 +1,9 @@
-#if HUNGNT_TWEEN
 using Cysharp.Threading.Tasks;
+using HungNT.UI.Tween;
 using TMPro;
 using UnityEngine;
 
-namespace WingsMob.HungNT
+namespace HungNT.UI.Tween
 {
     public class UINotify : MonoBehaviour
     {
@@ -23,4 +23,3 @@ namespace WingsMob.HungNT
         }
     }
 }
-#endif
